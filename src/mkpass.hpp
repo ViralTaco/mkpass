@@ -5,7 +5,7 @@
 namespace mkpass {
 using std::string_view_literals::operator ""sv;
 
-static constexpr auto kVersion = "mkpass 1.4.2"sv;
+static constexpr auto kVersion = "mkpass 1.5.0"sv;
 static constexpr auto kLicense = R"(
 Copyright (c) 2022 viraltaco_
 
@@ -37,7 +37,7 @@ symbols         (off|on) if on use symbols. Default: on
 length          (0 to 2^63) length/size in bytes. Default: 32
 
 OPT (one of):
-  --help, ?      Prints this help message.
+  --help         Prints this help message.
   --license      Prints the license.
   --version      Prints the version.
 
@@ -45,7 +45,7 @@ Examples:
   mkpass         Prints a 32 characters long password with symbols.
   mkpass on 32   Prints a 32 characters long password with symbols.
   mkpass off 1   Prints one alpha-numeric character.
-  mkpass ?       Prints everything you just read.
+  mkpass --help  Prints everything you just read.
   )"sv;
 } // namespace mkpass
 #endif

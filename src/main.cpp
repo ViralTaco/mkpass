@@ -34,7 +34,7 @@ int main(int argc, char** argv) {
     }
   }
   // sizeof kAlphabet - symbols (32) - NUL (1) = 10 + 2(26) = 62
-  static std::uniform_int_distribution<uchar> dist(0u, symbols + 62u);
+  static std::uniform_int_distribution<uchar> dist(0u, symbols + 61u);
 
   std::random_device r;
   std::seed_seq seed{r(), r(), r()};

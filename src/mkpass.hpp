@@ -5,7 +5,7 @@
 namespace mkpass {
 using std::string_view_literals::operator ""sv;
 
-static constexpr auto kVersion = "mkpass 1.5.0"sv;
+static constexpr auto kVersion = "mkpass 1.5.1~GG"sv;
 static constexpr auto kLicense = R"(
 Copyright (c) 2022 viraltaco_
 

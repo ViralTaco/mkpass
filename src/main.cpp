@@ -29,9 +29,8 @@ int main(int argc, char** argv) {
           goto fail_;
         
         return EXIT_SUCCESS;
-      } else { // "--help" == kArg1
-        [[fallthrough]];
       }
+      [[fallthrough]];  // "--help" == kArg1
     case '?':
       std::cout << mkpass::kUsage << std::endl;
       return EXIT_SUCCESS;

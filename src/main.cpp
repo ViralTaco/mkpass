@@ -30,7 +30,7 @@ int main(int argc, char** argv) {
       return EXIT_SUCCESS;
     }
   }
-  static std::uniform_int_distribution<uchar> dist(0u, lastidx);
+  std::uniform_int_distribution<uchar> dist(0u, lastidx);
 
   std::random_device r;
   std::seed_seq seed{ r(), r(), r(), };

@@ -1,12 +1,10 @@
-#ifndef PRO_ANTH_MKPASS_HPP
-#define PRO_ANTH_MKPASS_HPP
 #include <string_view>
 
 namespace mkpass {
-using std::string_view_literals::operator ""sv;
+ using std::string_view_literals::operator ""sv;
 
-static constexpr auto kVersion = "mkpass 1.6.1"sv;
-static constexpr auto kLicense = R"(
+ static constexpr auto kVersion = "mkpass 1.7.1"sv;
+ static constexpr auto kLicense = R"(
 Copyright (c) 2022 viraltaco_
 
 MIT License
@@ -27,8 +25,9 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-  )"sv;
-static constexpr auto kUsage = R"(
+ )"sv;
+
+ static constexpr auto kUsage = R"(
 mkpass generates 'random' passwords.
 usage:
 mkpass [OPT] symbols length
@@ -46,6 +45,49 @@ Examples:
   mkpass on 32   Prints a 32 characters long password with symbols.
   mkpass off 1   Prints one alpha-numeric character.
   mkpass --help  Prints everything you just read.
-  )"sv;
+ )"sv;
 } // namespace mkpass
-#endif
+
+#include <cstdlib> // std::{ strtoul, exit }
+#include <iostream>// std::{ cout, clog, cerr,... }
+#include <random>  // std::{ random_device, default_random_engine,... }
+
+int main(int argc, char** argv) {
+  using uchar = unsigned char;
+  using namespace mkpass;
+  using namespace std;
+  
+  cout.sync_with_stdio(false); // One thread. Nothing to sync.
+
+  static constexpr auto kAlpha =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+    "!\\#$%&'( )*+,-./:;<=>?@[]^_{|}~\""sv;
+  uchar lastidx = kAlpha.size() - ('\0' != kAlpha.back());
+  auto len = 32u;
+  
+  if (argc > 1) {
+    switch (string_view kArg(argv[1]); kArg[0]) {
+    case 'o':
+      if (kArg == "off") {
+        lastidx -= "!\\#$%&'( )*+,-./:;<=>?@[]^_{|}~\""sv.size();
+      }
+      if (argv[2]) { len = strtoul(argv[2], nullptr, 10); }
+      break;
+    case '-':
+      cout << kVersion;
+      if      (kArg == "--license") { cout << kLicense; }
+      else if (kArg != "--version") { cout << kUsage; }
+      [[fallthrough]];
+    default:
+      cout.put('\n');
+      return EXIT_SUCCESS;
+    }
+  }
+  
+  random_device r;
+  seed_seq seed{ r(), r(), r(), };
+  static auto t = mt19937_64(seed);
+  
+  uniform_int_distribution<uchar> d(0u, lastidx);
+  generate_n(ostream_iterator<uchar>(cout), len, [&] { return kAlpha[d(t)]; });
+}
